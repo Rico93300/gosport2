@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartController!
+{% endblock %}
+
+{% block body %}
+
+	<div class='container'>
+		<table class='table'>
+			<thead>
+
+				<tr>
+					<th>Product</th>
+					<td>category</td>
+					<th>quantity</th>
+					<th>price</th>
+					<th>total</th>
+					<th>Actions</th>
+					<th>Image</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set globalTotal = 0 %}
+				{% for item in cart %}
+
+					{% set globalTotal = globalTotal + item.product.price * item.quantity %}
+
+					<tr>
+
+						<td>{{item.product.title}}</td>
+						<td>{{item.product.category.name }}</td>
+
+						<td>
+							<a href="{{ path('app_cart_increase', {'id': item.product.id}) }}" class="btn btn-sm btn-success">+</a>
+							{{item.quantity}}
+							<a href="{{ path('app_cart_decrease', {'id': item.product.id}) }}" class="btn btn-sm btn-warning">-</a>
+						</td>
+						<td>{{ item.product.price }}
+							€</td>
+						<td>{{ item.product.price * item.quantity}}
+							€</td>
+						<td>
+							<a href="{{ path('app_cart_remove', {'id': item.product.id}) }}" class="btn btn-sm btn-danger">supprimer</a>
+						</td>
+						<td><img src="{{ asset('uploads/image/' ~ item.product.image) }}" class="card-img-top w-25" alt=""></td>
+					</tr>
+
+
+				{% endfor %}
+
+
+			</tbody>
+
+
+		</table>
+		<div class='d-flex justify-content-end'>
+			<p>TOTAL :
+				{{globalTotal}}
+				€
+			</p>
+			<div>
+				<a href="{{ path('app_cart_flush') }}" class="btn  btn-danger">Vider le panier</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

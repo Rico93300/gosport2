@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product index
+{% endblock %}
+
+{% block body %}
+	<h1 class='text-center m-4'>Produit
+	</h1>
+
+	<div class='container'>
+
+
+		<div class='m-2'>
+			{{form_start(form)}}
+			{{form_widget(form)}}
+			<button type="submit" class='btn btn-primary'>rechercher</button>
+			{{form_end(form)}}
+		</div>
+
+
+		<div class='m-4 d-flex justify-content-center'>
+			<a href="{{path('app_product_index')}}" class='btn btn-primary m-1'>principale</a>
+
+			{% for category in categories %}
+				<a href="{{path('app_product_index',{'id':category.id})}}" class='btn btn-primary m-1'>{{category.name}}</a>
+			{% endfor %}
+		</div>
+
+		<div class="row">
+			{% for product in products %}
+				<div class="col-md-4 mb-4">
+					<div class="card">
+						<img src="{{ asset('uploads/image/' ~ product.image) }}" class="card-img-top" alt="">
+						<div class="card-body">
+							<h5 class="card-title">{{ product.title }}</h5>
+							<p class="card-text">{{ product.description }}</p>
+							<p class="card-text">Price:
+								{{ product.price }}</p>
+							<p class="card-text">Category:
+								{{ product.category.name }}</p>
+							<p class="card-text">Reference:
+								{{ product.reference }}</p>
+							<a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-primary">Show</a>
+							<a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-secondary">Edit</a>
+							<a href="{{ path('app_cart_increase', {'id': product.id}) }}" class="btn btn-success">Add to cart</a>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<div class="col">
+					<p>No records found</p>
+				</div>
+			{% endfor %}
+		</div>
+
+		<a href="{{ path('app_product_new') }}">Create new</a>
+	</div>
+{% endblock %}
